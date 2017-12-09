@@ -6,6 +6,7 @@ import re
 import operator
 import sys
 import cPickle as pickle
+import json
 
 nodeid = 0
 nodes = {}
@@ -74,6 +75,7 @@ def cn5ToCSV(inputDir, ALL_LANGUAGES=False):
             for line in f:
                 #tokens = line[0:-1].split('\t')
                 tokens = line[0:-1].split('\t')
+                json_tokens = json.loads(tokens[-1])
                 
                 #fromN = get_node_id(esc(tokens[2]))
                 #toN = get_node_id(esc(tokens[3]))
@@ -84,18 +86,18 @@ def cn5ToCSV(inputDir, ALL_LANGUAGES=False):
                     add_node(fromN)
                     add_node(toN)
 
-                    source = esc(tokens[8])
+                    source = str(json_tokens[u'sources'][0][u'contributor'])
                     add_source(source)
 
                     relType = esc(tokens[1])
 
-                    ef.write(str(fromN) + '\t' 
-                        + str(toN) + '\t' 
-                        + relType + '\t' 
-                        #+ esc(tokens[4]) + '\t' 
-                        + escFloat(tokens[5]) + '\t' 
-                        + source + '\t' 
-                        + esc(tokens[9]) + '\n')
+                    ef.write(str(fromN) + '\t'
+                        + str(toN) + '\t'
+                        + relType + '\t'
+                        + escFloat(str(json_tokens[u'weight'])) + '\t'
+                        + esc(source) + '\t'
+                        + esc(str(json_tokens[u'dataset'])) + '\n')
+
 
                     relType = relType[1:-1]
                     if relType not in relsDict:
