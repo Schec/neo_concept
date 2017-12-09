@@ -39,46 +39,29 @@ How-To
     # get latest conceptnet from http://conceptnet5.media.mit.edu/downloads/
     mkdir conceptnet
     cd concepnet
-    wget http://conceptnet5.media.mit.edu/downloads/current/conceptnet5_flat_csv_5.3.tar.bz2
-    tar jxvf conceptnet5_flat_csv_5.3.tar.bz2
-    ln -s csv_<version> csv_current
+    wget https://s3.amazonaws.com/conceptnet/downloads/2017/edges/conceptnet-assertions-5.5.5.csv.gz
+    gunzip conceptnet-assertions-5.5.5.csv.gz
+    ln -s conceptnet-assertions-5.5.5.csv csv_current
     cd ..
 
     # Usage:
     # python convertcn.py <input directory> [ALL_LANGUAGES]
     # If the flag ALL_LANGUAGES is not set, only English concepts will be converted
     # this will take a while
-    python neo_concept/convertcn.py conceptnet/csv_current/assertions/
+    python neo_concept/convertcn.py conceptnet
 
-    # optionally, you can get the POS tags. This assumes that stanford nlp is installed in
-    # stanfordNLPdir = "../stanford-corenlp-python/stanford-corenlp-full-2015-01-30"
-    # neoConceptRootForSNLP = '../../neo4j-kbs/conceptnet/'
-    # modify the two variables above in POScn.py to fit your stanford nlp installation
-    # the following commands will take a while and were tested with a java memory of 2GB
-    python neo_concept/POScn.py surface conceptnet/edges.csv
-    python neo_concept/POScn.py genpos conceptnet/edges.csv 50000
-    python neo_concept/POScn.py poscount conceptnet/edges.csv
-
-    # If you are interested in a getting the Set of the relations' types then do:
-    python neo_conceptnet/relsSet.py
-    # From a python shell you can load that set by doing:
-    import cPickle as pickle
-    relsSet = pickle.load(open( "../conceptnet/relsSet.p", "rb" ) )
-
-    # get latest neo4j (tested with neo4j-community-2.2.2)
-    curl -O -J -L http://neo4j.com/artifact.php?name=neo4j-community-2.2.2-unix.tar.gz
-    tar zxf neo4j-community-2.2.2-unix.tar.gz
+    # get latest neo4j, community edition, from https://neo4j.com/download/other-releases/#releases
+    # unzip the file in any directory
 
     # do only one of the two import commands below. If you calculated the POS tags, edges.csv is no longer needed
 
     # import nodes.csv and edges.csv using the new import tool (WITHOUT POS TAGS!) -- this will take a while too
-    neo4j-community-2.2.2/bin/neo4j-import --into neo4j-community-2.2.2/data/graph.db --nodes conceptnet/nodes.csv --relationships conceptnet/edges.csv --delimiter "TAB"
+    mkdir concept-netgraph
+    ~/Downloads/neo4j-community-3.3.1/bin/neo4j-import --into conceptnet-graph --nodes nodes.csv --relationships edges.csv --delimiter "TAB"
 
-    # import nodes.csv and edges.csv using the new import tool (WITH POS TAGS!) -- this will take a while too
-    neo4j-community-2.2.2/bin/neo4j-import --into neo4j-community-2.2.2/data/graph.db --nodes conceptnet/nodes.csv --relationships conceptnet/edgesPOS.csv --delimiter "TAB"
 
     # start neo4j
-    neo4j-community-2.2.2/bin/neo4j start
+    # point neo4j to the conceptnet-graph directory you created
 
 
 Goto localhost:7474 to see the graph. Create and index on Concepts for performance reasons:
