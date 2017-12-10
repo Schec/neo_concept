@@ -33,7 +33,7 @@ How-To
 
     mkdir neo4j-kbs
     cd neo4j-kbs
-    git clone https://github.com/redsk/neo_concept.git
+    git clone https://github.com/Schec/neo_concept.git
 
     # get latest conceptnet from http://conceptnet5.media.mit.edu/downloads/
     mkdir conceptnet
