@@ -1,7 +1,7 @@
 Neo_Concept
 -----------
 
-This software imports the ConceptNet Knowledge Base (version tested: 5.5) into neo4j 3.2.3. 
+This software imports the ConceptNet Knowledge Base (version tested: 5.5) into neo4j 3.3.1. 
 This project was inspired by [a post from Max De Marzi](http://maxdemarzi.com/2013/05/13/knowledge-bases-in-neo4j/) who also provided [the original software](https://github.com/maxdemarzi/neo_concept).
 
 This rewrite does not use the [Bloom filter](http://en.wikipedia.org/wiki/Bloom_filter) anymore as according to ConceptNet wiki [the uri is unique among assertions](https://github.com/commonsense/conceptnet5/wiki/Edges) and [the provided CSV files](http://conceptnet5.media.mit.edu/downloads/current/) provide a list of assertions. 
@@ -22,11 +22,11 @@ Optionally, it is possible to perform Part-Of-Speech (POS) tagging of the two co
 Pre-Requisites
 --------------
 
-- neo4j version 3.2.3 (needed for the [new import tool])
+- neo4j version 3.3.1 (needed for the [new import tool])
 - [ConceptNet 5.5](https://s3.amazonaws.com/conceptnet/downloads/2017/edges/conceptnet-assertions-5.5.5.csv.gz) provides a list of assertions
 - regular Python, no dependencies
 
-Tested with neo4j-community-3.2.3.
+Tested with neo4j-community-3.3.1.
 
 How-To 
 -------------------
